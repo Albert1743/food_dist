@@ -3,7 +3,7 @@ const close_btn = document.querySelectorAll('[data-close]')
 const modal = document.querySelector('.modal')
 
 function modalTrigger(arr, action) {
-    arr.forEach((btn) => {
+    arr.forEach(btn => {
         btn.onclick = () => {
             modal.classList[action]('show', 'fade')
         }
@@ -28,7 +28,7 @@ total.innerHTML = slides.length < 10 ? `0${slides.length}` : slides.length
 showSlide()
 
 function showSlide(n) {
-    if (n >= slides.length - 1) {
+    if (n > slides.length - 1) {
         slideIndex = 0
     }
     if (slideIndex < 0) {
@@ -69,4 +69,59 @@ tab_btns.forEach((btn, idx) => {
         showTab(idx)
     }
 })
+
+
+// Timer
+const deadline = "2024-05-06 17:31"
+
+function getRemainingTime(endTime) {
+    const t = Date.parse(endTime) - Date.parse(new Date())
+    const days = Math.floor((t / 1000) / 60 / 60 / 24)
+    const hours = Math.floor((t / 1000) / 60 / 60 % 24)
+    const minutes = Math.floor((t / 1000) / 60 % 60)
+    const seconds = Math.floor((t / 1000) % 60)
+
+    return {
+        t,
+        days,
+        hours,
+        minutes,
+        seconds
+    }
+}
+
+function setTimer(endTime, selector) {
+    const t = document.querySelector(selector)
+    const days = t.querySelector('#days')
+    const hours = t.querySelector('#hours')
+    const minutes = t.querySelector('#minutes')
+    const seconds = t.querySelector('#seconds')
+    const interval = setInterval(updateTimer, 1000)
+
+
+    function updateTimer() {
+        const t = getRemainingTime(endTime)
+
+        if (t.t <= 0) {
+            clearInterval(interval);
+            days.innerHTML = '00';
+            hours.innerHTML = '00';
+            minutes.innerHTML = '00';
+            seconds.innerHTML = '00';
+            return;
+        }
+
+        days.innerHTML = setNulls(t.days);
+        hours.innerHTML = setNulls(t.hours);
+        minutes.innerHTML = setNulls(t.minutes);
+        seconds.innerHTML = setNulls(t.seconds);
+
+        function setNulls(num) {
+            return num < 10 ? `0${num}` : num;
+        }
+    }
+}
+
+setTimer(deadline, '.timer')
+
 
