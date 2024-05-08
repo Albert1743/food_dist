@@ -72,7 +72,7 @@ tab_btns.forEach((btn, idx) => {
 
 
 // Timer
-const deadline = "2024-05-06 17:31"
+const deadline = "2024-05-14"
 
 function getRemainingTime(endTime) {
     const t = Date.parse(endTime) - Date.parse(new Date())
@@ -125,3 +125,69 @@ function setTimer(endTime, selector) {
 setTimer(deadline, '.timer')
 
 
+// calc
+
+const genderBtns = document.querySelectorAll('#gender .calculating__choose-item')
+const inputs = document.querySelectorAll('.calculating__choose_medium input')
+const act_btns = document.querySelectorAll('.calculating__choose_big .calculating__choose-item')
+const cardio_btns = document.querySelectorAll('.calculating__choose_big div')
+const result_view = document.querySelector('#result')
+
+
+const user = {
+    gender: "woman"
+}
+
+
+genderBtns.forEach((btn) => {
+    btn.onclick = () => {
+        genderBtns.forEach(el => el.classList.remove('calculating__choose-item_active'))
+        btn.classList.add('calculating__choose-item_active')
+
+        const g = btn.getAttribute('data-gender')
+        user.gender = g
+    }
+})
+
+
+inputs.forEach(inp => {
+    inp.oninput = () => {
+        user[inp.name] = inp.value
+    }
+})
+
+
+act_btns.forEach((btn) => {
+    btn.onclick = () => {
+        const act = +btn.getAttribute('data-act')
+        let result
+
+        if (user.gender === 'woman') {
+            result = 655.1 + (9.563 * user.weight) + (1.85 * user.height) - (4.676 * user.age)
+        } else {
+            result = 66.5 + (13.75 * user.weight) + (5.003 * user.height) - (6.775 * user.age)
+        }
+        result_view.innerHTML = Math.round(result * act);
+
+        cardio_btns.forEach(el => el.classList.remove('calculating__choose-item_active'))
+        btn.classList.add('calculating__choose-item_active')
+    }
+})
+
+
+
+// others 
+let form = document.forms[0]
+
+form.onsubmit = (e) => {
+    e.preventDefault()
+
+    let obj = {}
+    let fn = new FormData(form)
+
+    fn.forEach((value, key) => {
+        obj[key] = value
+    })
+
+    console.log(obj);
+}

@@ -11,6 +11,10 @@ a {
     text-decoration: none
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 .btn {
     width: 220px;
     height: 65px;
